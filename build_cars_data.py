@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(ROOT, "assets")
@@ -14,6 +15,13 @@ BRANDS = {
                 "title": "Aston Martin Vantage S",
                 "slug": "aston_martin_vantage_s",
                 "price": "18 500 000 ₽",
+            },
+            {
+                "folder": "Aston Martin Valhalla",
+                "car_id": "car2",
+                "title": "Aston Martin Valhalla",
+                "slug": "aston_martin_valhalla",
+                "price": "45 000 000 ₽",
             },
         ],
     },
@@ -38,6 +46,13 @@ BRANDS = {
                     "Сухая масса": "1900 кг",
                 },
             },
+            {
+                "folder": "bugatti veyron",
+                "car_id": "car2",
+                "title": "Bugatti Veyron 16.4",
+                "slug": "bugatti_veyron",
+                "price": "150 000 000 ₽",
+            },
         ],
     },
     "ferrari": {
@@ -48,6 +63,13 @@ BRANDS = {
                 "title": "Ferrari FXX K",
                 "slug": "ferrari_fxx_k",
                 "price": "85 000 000 ₽",
+            },
+            {
+                "folder": "Ferrari SF90 Stradale",
+                "car_id": "car2",
+                "title": "Ferrari SF90 Stradale",
+                "slug": "ferrari_sf90_stradale",
+                "price": "38 000 000 ₽",
             },
         ],
     },
@@ -60,6 +82,13 @@ BRANDS = {
                 "slug": "lamborghini_huracan",
                 "price": "32 000 000 ₽",
             },
+            {
+                "folder": "Lamborghini Revuelto",
+                "car_id": "car2",
+                "title": "Lamborghini Revuelto",
+                "slug": "lamborghini_revuelto",
+                "price": "52 000 000 ₽",
+            },
         ],
     },
     "mclaren": {
@@ -70,6 +99,13 @@ BRANDS = {
                 "title": "McLaren 650S",
                 "slug": "mclaren_650s",
                 "price": "24 500 000 ₽",
+            },
+            {
+                "folder": "McLaren P1",
+                "car_id": "car2",
+                "title": "McLaren P1",
+                "slug": "mclaren_p1",
+                "price": "89 000 000 ₽",
             },
         ],
     },
@@ -94,21 +130,32 @@ BRANDS = {
 }
 
 
-def parse_data_txt(path, overrides=None):
-    specs_map = {}
+def load_existing_cars_data():
+    path = os.path.join(ROOT, "card", "cars_data.js")
+    if not os.path.isfile(path):
+        return {}
+
+    with open(path, encoding="utf-8") as f:
+        content = f.read().strip()
+
+    if content.startswith("const carsData = "):
+        content = content[len("const carsData = "):]
+
+    if content.endswith(";"):
+        content = content[:-1]
+
+    return json.loads(content)
+
+
+def get_specs(car_meta, existing_car):
+    if existing_car and existing_car.get("specs"):
+        return existing_car["specs"]
+
+    overrides = car_meta.get("override_specs")
     if overrides:
-        specs_map.update(overrides)
-    elif os.path.isfile(path):
-        with open(path, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line or ":" not in line:
-                    continue
-                key, value = line.split(":", 1)
-                specs_map[key.strip()] = value.strip()
-    return specs_map
+        return build_specs(overrides)
 
-
+    return []
 def build_specs(specs_map):
     normalized = {}
 
@@ -154,8 +201,35 @@ def build_specs(specs_map):
     return specs
 
 
+def ensure_cover_image(folder_path):
+    cover_names = {"1.jpg", "1.jpeg", "1.png", "1.webp", "1.avif"}
+    existing = {
+        name.lower()
+        for name in os.listdir(folder_path)
+        if os.path.splitext(name)[1].lower() in IMAGE_EXTENSIONS
+    }
+
+    if existing & cover_names:
+        return
+
+    images = sorted(
+        name
+        for name in os.listdir(folder_path)
+        if os.path.splitext(name)[1].lower() in IMAGE_EXTENSIONS
+    )
+    if not images:
+        return
+
+    source = os.path.join(folder_path, images[0])
+    ext = os.path.splitext(images[0])[1].lower()
+    target = os.path.join(folder_path, f"1{ext}")
+    if not os.path.exists(target):
+        shutil.copy2(source, target)
+
+
 def image_paths(folder):
     folder_path = os.path.join(ASSETS, folder)
+    ensure_cover_image(folder_path)
     files = [
         name
         for name in os.listdir(folder_path)
@@ -164,15 +238,16 @@ def image_paths(folder):
 
     def sort_key(name):
         stem = os.path.splitext(name)[0]
-        if stem == "1":
-            return (0, name.lower())
-        return (1, name.lower())
+        if stem.isdigit():
+            return (0, int(stem), name.lower())
+        return (1, 999, name.lower())
 
     files.sort(key=sort_key)
     return [f"../assets/{folder}/{name}" for name in files]
 
 
 def main():
+    existing_data = load_existing_cars_data()
     cars_data = {}
 
     for brand_id, brand_meta in BRANDS.items():
@@ -181,16 +256,14 @@ def main():
         for car_meta in brand_meta["cars"]:
             folder = car_meta["folder"]
             car_id = car_meta["car_id"]
-            data_path = os.path.join(ASSETS, folder, "data.txt")
-            overrides = car_meta.get("override_specs")
-            specs_map = parse_data_txt(data_path, overrides)
+            existing_car = existing_data.get(brand_id, {}).get(car_id, {})
 
             cars_data[brand_id][car_id] = {
                 "title": car_meta["title"],
                 "price": car_meta["price"],
                 "preorderUrl": f"../preorder.html?car={car_meta['slug']}",
                 "images": image_paths(folder),
-                "specs": build_specs(specs_map),
+                "specs": get_specs(car_meta, existing_car),
             }
 
     output_path = os.path.join(ROOT, "card", "cars_data.js")
