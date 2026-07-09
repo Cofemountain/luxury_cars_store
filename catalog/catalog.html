@@ -773,7 +773,6 @@
     }
 
     window.addEventListener('hashchange', handleHash);
-    window.addEventListener('DOMContentLoaded', handleHash);
 
     // Сортировка карточек
     let originalCardsOrder = [];
@@ -781,6 +780,7 @@
     // Сохраняем исходный порядок карточек после загрузки DOM
     window.addEventListener('DOMContentLoaded', () => {
       renderCatalogFromData();
+      handleHash();
       originalCardsOrder = Array.from(document.querySelectorAll('.car-card'));
       
       // Очистка классов анимации и задержки по окончании анимации
