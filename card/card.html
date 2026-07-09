@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка автомобиля - Redline Motors</title>
+    <link rel="icon" type="image/png" href="../assets/logo.png">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #121212;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 1000 !important;
+        }
+
+        .navbar {
+            background-color: #ffffff !important;
+            padding: 20px 50px !important;
+        }
+
+        .card-page {
+            flex: 1;
+            width: 100%;
+            padding: 110px 20px 40px;
+        }
+
+        .card-shell {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            top: -52px;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .wb-product-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            padding-top: 56px;
+        }
+
+        .wb-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 0 0 45%;
+            min-width: 0;
+            align-items: center;
+        }
+
+        .wb-main-image-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .wb-main-image {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            background-color: #f7f7f7;
+            border: 1px solid #e0e0e0;
+            aspect-ratio: 16 / 9;
+        }
+
+        .wb-main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .wb-carousel-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .wb-thumbnails {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 5px 0;
+            flex: 0 0 auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .wb-thumbnails::-webkit-scrollbar {
+            display: none;
+        }
+
+        .wb-thumb {
+            flex: 0 0 88px;
+            height: 66px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background-size: cover;
+            background-position: center;
+            transition: border-color 0.3s;
+        }
+
+        .wb-thumb.active {
+            border-color: #e63946;
+        }
+
+        .wb-thumb:hover {
+            border-color: #999;
+        }
+
+        .wb-thumb.active:hover {
+            border-color: #e63946;
+        }
+
+        .carousel-btn {
+            background-color: #ffffff;
+            color: #121212;
+            border: 1px solid #e0e0e0;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .carousel-btn:hover {
+            background-color: #e63946;
+            color: #ffffff;
+            border-color: #e63946;
+        }
+
+        .wb-info {
+            flex: 1 1 28%;
+            min-width: 0;
+            padding-top: 10px;
+        }
+
+        .wb-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            color: #121212;
+        }
+
+        .wb-specs {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .wb-spec-row {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .wb-spec-name {
+            width: 50%;
+            color: #666;
+            border-bottom: 1px dotted #e0e0e0;
+            position: relative;
+            top: -4px;
+        }
+
+        .wb-spec-value {
+            width: 50%;
+            padding-left: 5px;
+            color: #121212;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .wb-spec-value.highlight {
+            color: #e63946;
+            font-weight: 700;
+        }
+
+        .wb-buy-box {
+            flex: 0 0 22%;
+            min-width: 220px;
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+            position: sticky;
+            top: 110px;
+        }
+
+        .wb-current-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #e63946;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .wb-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .wb-btn-primary {
+            background-color: #e63946;
+            color: #fff;
+        }
+
+        .wb-btn-primary:hover {
+            background-color: #c92a38;
+        }
+
+        .wb-delivery {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .empty-state h1 {
+            margin-bottom: 12px;
+            font-size: 30px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .divfooter {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+            width: 100%;
+            padding: 60px 20px 40px 20px;
+            box-sizing: border-box;
+            margin-top: auto !important;
+            flex-shrink: 0;
+        }
+
+        .divfooter a {
+            color: #a0a0a0 !important;
+        }
+
+        .divfooter a:hover {
+            color: #e63946 !important;
+        }
+
+        .divfooter-bottom p {
+            color: #666666 !important;
+        }
+
+        .related-offers {
+            max-width: 1400px;
+            margin: 60px auto 0;
+            padding-top: 10px;
+        }
+
+        .related-offers h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 28px;
+            color: #121212;
+        }
+
+        .related-offers h2 span {
+            color: #e63946;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .related-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .related-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(230, 57, 70, 0.2);
+            border-color: #e63946;
+        }
+
+        .related-card-link {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-card-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-bottom: 3px solid #e63946;
+        }
+
+        .related-card-content {
+            padding: 20px 20px 0;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .related-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #121212;
+            margin-bottom: 12px;
+        }
+
+        .related-card-specs {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .related-card-specs span {
+            color: #121212;
+            font-weight: 500;
+        }
+
+        .related-card-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: #e63946;
+            text-decoration: none;
+        }
+
+        .related-card-bottom {
+            margin-top: auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .related-card-btn {
+            background: #ffffff;
+            color: #121212;
+            border: 1px solid #e63946;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .related-card:hover .related-card-btn {
+            color: #e63946;
+        }
+
+        @media (max-width: 1200px) {
+            .wb-product-container {
+                flex-wrap: wrap;
+            }
+
+            .wb-gallery {
+                flex: 1 1 100%;
+            }
+
+            .wb-info {
+                flex: 1 1 calc(60% - 15px);
+            }
+
+            .wb-buy-box {
+                flex: 1 1 calc(40% - 15px);
+                position: static;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .card-page {
+                padding-top: 95px;
+            }
+
+            .wb-product-container {
+                flex-direction: column;
+                gap: 24px;
+                padding-top: 0;
+            }
+
+            .wb-gallery,
+            .wb-info,
+            .wb-buy-box {
+                flex: 1 1 auto;
+                width: 100%;
+                min-width: 0;
+            }
+
+            .wb-buy-box {
+                position: static;
+            }
+
+            .wb-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px !important;
+            }
+
+            .card-page {
+                padding: 85px 16px 30px;
+            }
+
+            .back-btn {
+                top: 12px;
+                left: 12px;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                padding: 0;
+                border: none;
+                background: rgba(255, 255, 255, 0.92);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+                z-index: 5;
+                transform: none;
+                overflow: visible;
+            }
+
+            .back-btn::before {
+                display: none;
+            }
+
+            .back-btn:hover {
+                color: #e63946;
+                border: none;
+                transform: scale(1.05);
+                box-shadow: 0 4px 14px rgba(230, 57, 70, 0.25);
+            }
+
+            .back-btn-text {
+                display: none;
+            }
+
+            .wb-main-image {
+                aspect-ratio: 4 / 3;
+            }
+
+            .wb-thumb {
+                flex: 0 0 calc((100% - 24px) / 4);
+                width: calc((100% - 24px) / 4);
+                height: 54px;
+                min-width: 0;
+            }
+
+            .wb-spec-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .wb-spec-name,
+            .wb-spec-value {
+                width: 100%;
+                padding-left: 0;
+            }
+
+            .wb-spec-name {
+                border-bottom: none;
+                top: 0;
+            }
+
+            .wb-current-price {
+                font-size: 24px;
+            }
+
+            .carousel-btn {
+                display: none;
+            }
+
+            .wb-carousel-container {
+                gap: 0;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .wb-thumbnails {
+                width: 100%;
+                max-width: 100%;
+                gap: 8px;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding: 5px 2px;
+            }
+
+            .wb-thumb {
+                scroll-snap-align: center;
+            }
+
+            .related-offers {
+                margin-top: 40px;
+            }
+
+            .related-offers h2 {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .related-card-image {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+  <input type="checkbox" id="active">
+  <label for="active" class="menu-btn">
+    <span></span>
+  </label>
+  <div class="wrapper">
+    <ul>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="../catalog/catalog.html">Каталог</a></li>
+      <li><a href="../preorder.html">Предзаказ</a></li>
+      <li><a href="../contacts.html">Обратная связь</a></li>
+    </ul>
+  </div>
+
+  <header>
+    <nav class="navbar light-bg">
+      <a href="../index.html" class="logo"><span>Redline</span> Motors</a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Главная</a></li>
+        <li><a href="../catalog/catalog.html">Каталог</a></li>
+        <li><a href="../preorder.html">Предзаказ</a></li>
+        <li><a href="../contacts.html">Обратная связь</a></li>
+      </ul>
+      <div class="burger" id="burger-menu">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="card-page" id="card-root"></main>
+
+  <div class="divfooter">
+    <div class="divfooter-nav-row">
+      <a href="../catalog/catalog.html">Каталог</a>
+      <a href="../contacts.html">Обратная связь</a>
+    </div>
+    <div class="divfooter-socials">
+      <a href="#" target="_blank">
+        <img src="../assets/logo/vk.png" alt="VK" />
+      </a>
+      <a href="#" target="_blank">
+        <img src="../assets/logo/tg.png" alt="Telegram" />
+      </a>
+      <a href="#" target="_blank">
+        <img src="../assets/logo/youtube.png" alt="YouTube" />
+      </a>
+    </div>
+    <div class="divfooter-bottom">
+      <p>© 2026 Redline Motors. Все права защищены.</p>
+    </div>
+  </div>
+
+  <script src="./cars_data.js"></script>
+  <script>
+    (function() {
+      var checkbox = document.getElementById('active');
+      if (!checkbox) return;
+
+      document.querySelectorAll('.wrapper a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          checkbox.checked = false;
+        });
+      });
+
+      var wrapper = document.querySelector('.wrapper');
+      if (wrapper) {
+        wrapper.addEventListener('click', function(e) {
+          if (e.target === wrapper) {
+            checkbox.checked = false;
+          }
+        });
+      }
+    })();
+
+    var burgerBtn = document.getElementById('burger-menu');
+    var navLinksEl = document.querySelector('.nav-links');
+    if (burgerBtn && navLinksEl) {
+      burgerBtn.addEventListener('click', function() {
+        navLinksEl.classList.toggle('nav-active');
+        burgerBtn.classList.toggle('toggle');
+      });
+      document.addEventListener('click', function(e) {
+        if (navLinksEl.classList.contains('nav-active') &&
+            !navLinksEl.contains(e.target) &&
+            !burgerBtn.contains(e.target)) {
+          navLinksEl.classList.remove('nav-active');
+          burgerBtn.classList.remove('toggle');
+        }
+      });
+    }
+
+    var currentImageIndex = 0;
+    var galleryImages = [];
+
+    function getCarRecord() {
+      var params = new URLSearchParams(window.location.search);
+      var brand = params.get('brand');
+      var car = params.get('car');
+
+      if (!brand || !car || typeof carsData === 'undefined' || !carsData[brand] || !carsData[brand][car]) {
+        return null;
+      }
+
+      return {
+        brand: brand,
+        car: car,
+        data: carsData[brand][car]
+      };
+    }
+
+    function findSpecValue(specs, keyword) {
+      if (!Array.isArray(specs)) return 'Не указано';
+      var found = specs.find(function(spec) {
+        return spec.name && spec.name.toLowerCase().indexOf(keyword) !== -1;
+      });
+      return found && found.value ? found.value : 'Не указано';
+    }
+
+    function getAllCars() {
+      var list = [];
+      if (typeof carsData === 'undefined') return list;
+
+      Object.keys(carsData).forEach(function(brandId) {
+        Object.keys(carsData[brandId]).forEach(function(carId) {
+          list.push({
+            brand: brandId,
+            car: carId,
+            data: carsData[brandId][carId]
+          });
+        });
+      });
+
+      return list;
+    }
+
+    function getRandomOffers(currentBrand, currentCar, count) {
+      var others = getAllCars().filter(function(item) {
+        return !(item.brand === currentBrand && item.car === currentCar);
+      });
+
+      for (var i = others.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = others[i];
+        others[i] = others[j];
+        others[j] = temp;
+      }
+
+      return others.slice(0, count);
+    }
+
+    function renderRelatedOffers(record) {
+      var offers = getRandomOffers(record.brand, record.car, 4);
+      if (!offers.length) return '';
+
+        var cardsHtml = offers.map(function(item) {
+        var carData = item.data;
+        var previewImage = carData.images && carData.images.length ? carData.images[0] : '../assets/Ferrari/199035aa5a6e472c13fa94644c13ce82.jpg';
+        var acceleration = findSpecValue(carData.specs, 'разгон');
+        var power = findSpecValue(carData.specs, 'мощност');
+        var preorderUrl = carData.preorderUrl || '../preorder.html';
+
+        return '<article class="related-card">' +
+          '<a href="card.html?brand=' + item.brand + '&car=' + item.car + '" class="related-card-link">' +
+          '<div class="related-card-image" style="background-image: url(\'' + previewImage + '\');"></div>' +
+          '<div class="related-card-content">' +
+            '<h3 class="related-card-title">' + carData.title + '</h3>' +
+            '<p class="related-card-specs">' +
+              'Разгон: <span>' + acceleration + '</span><br>' +
+              'Мощность: <span>' + power + '</span>' +
+            '</p>' +
+          '</div>' +
+          '</a>' +
+          '<div class="related-card-bottom">' +
+            '<a href="card.html?brand=' + item.brand + '&car=' + item.car + '" class="related-card-price">' + (carData.price || 'Цена по запросу') + '</a>' +
+            '<a href="' + preorderUrl + '" class="related-card-btn">Предзаказ</a>' +
+          '</div>' +
+        '</article>';
+      }).join('');
+
+      return '<section class="related-offers">' +
+        '<h2>Другие <span>предложения</span></h2>' +
+        '<div class="related-grid">' + cardsHtml + '</div>' +
+      '</section>';
+    }
+
+    function renderNotFound() {
+      document.getElementById('card-root').innerHTML =
+        '<section class="empty-state">' +
+          '<h1>Автомобиль не найден</h1>' +
+          '<p>Проверьте ссылку или вернитесь в каталог.</p>' +
+          '<a class="wb-btn wb-btn-primary" href="../catalog/catalog.html">В каталог</a>' +
+        '</section>';
+    }
+
+    function setActiveImage(index) {
+      if (!galleryImages.length) return;
+
+      var total = galleryImages.length;
+      currentImageIndex = ((index % total) + total) % total;
+      var mainImage = document.getElementById('mainImage');
+      var thumbs = document.querySelectorAll('.wb-thumb');
+
+      if (mainImage) {
+        mainImage.src = galleryImages[currentImageIndex];
+        mainImage.alt = document.querySelector('.wb-title') ? document.querySelector('.wb-title').textContent : '';
+      }
+
+      thumbs.forEach(function(thumb, thumbIndex) {
+        thumb.classList.toggle('active', thumbIndex === currentImageIndex);
+        if (thumbIndex === currentImageIndex) {
+          thumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      });
+    }
+
+    function bindCarousel() {
+      var prevBtn = document.getElementById('carouselPrev');
+      var nextBtn = document.getElementById('carouselNext');
+      var track = document.getElementById('galleryTrack');
+      var thumbs = document.querySelectorAll('.wb-thumb');
+
+      thumbs.forEach(function(thumb, index) {
+        thumb.addEventListener('click', function() {
+          setActiveImage(index);
+        });
+      });
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+          setActiveImage(currentImageIndex - 1);
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          setActiveImage(currentImageIndex + 1);
+        });
+      }
+
+      if (track) {
+        track.addEventListener('wheel', function(e) {
+          if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+            track.scrollLeft += e.deltaY;
+            e.preventDefault();
+          }
+        }, { passive: false });
+      }
+    }
+
+    function renderCar(record) {
+      var carData = record.data;
+      galleryImages = Array.isArray(carData.images) && carData.images.length ? carData.images : ['../assets/Ferrari/199035aa5a6e472c13fa94644c13ce82.jpg'];
+      var specs = Array.isArray(carData.specs) ? carData.specs : [];
+      var preorderUrl = carData.preorderUrl || '../preorder.html';
+      var backUrl = '../catalog/catalog.html#' + record.brand;
+
+      document.title = carData.title + ' - Redline Motors';
+
+      var thumbsHtml = galleryImages.map(function(image, index) {
+        return '<button type="button" class="wb-thumb' + (index === 0 ? ' active' : '') + '" style="background-image: url(\'' + image + '\');" aria-label="Фото ' + (index + 1) + '"></button>';
+      }).join('');
+
+      var specsHtml = specs.map(function(spec) {
+        return '<div class="wb-spec-row">' +
+          '<div class="wb-spec-name">' + spec.name + '</div>' +
+          '<div class="wb-spec-value' + (spec.highlight ? ' highlight' : '') + '">' + spec.value + '</div>' +
+        '</div>';
+      }).join('');
+
+      document.getElementById('card-root').innerHTML =
+        '<div class="card-shell">' +
+          '<div class="wb-product-container">' +
+            '<div class="wb-gallery">' +
+              '<div class="wb-main-image-wrap">' +
+                '<a class="back-btn back-catalog-btn" href="' + backUrl + '" aria-label="Назад в каталог">' +
+                  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>' +
+                  '<span class="back-btn-text">Назад в каталог</span>' +
+                '</a>' +
+                '<div class="wb-main-image">' +
+                  '<img id="mainImage" src="' + galleryImages[0] + '" alt="' + carData.title + '">' +
+                '</div>' +
+              '</div>' +
+              '<div class="wb-carousel-container">' +
+                '<button type="button" class="carousel-btn" id="carouselPrev" aria-label="Предыдущее фото">&#10094;</button>' +
+                '<div class="wb-thumbnails" id="galleryTrack">' + thumbsHtml + '</div>' +
+                '<button type="button" class="carousel-btn" id="carouselNext" aria-label="Следующее фото">&#10095;</button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="wb-info">' +
+              '<h1 class="wb-title">' + carData.title + '</h1>' +
+              '<div class="wb-specs">' + specsHtml + '</div>' +
+            '</div>' +
+            '<div class="wb-buy-box">' +
+              '<span class="wb-current-price">' + (carData.price || 'Цена по запросу') + '</span>' +
+              '<a class="wb-btn wb-btn-primary" href="' + preorderUrl + '">Оформить предзаказ</a>' +
+              '<div class="wb-delivery">🚚 Завтра, автосалон Москва</div>' +
+            '</div>' +
+          '</div>' +
+          renderRelatedOffers(record) +
+        '</div>';
+
+      bindCarousel();
+      setActiveImage(0);
+    }
+
+    var carRecord = getCarRecord();
+    if (!carRecord) {
+      renderNotFound();
+    } else {
+      renderCar(carRecord);
+    }
+  </script>
+</body>
+</html>

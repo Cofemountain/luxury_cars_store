@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталог спорткаров</title>
+    <link rel="icon" type="image/png" href="../assets/logo.png">
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/index.css">
@@ -21,12 +22,17 @@
             color: #121212; /* Темный текст */
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .catalog-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 120px 20px 50px 20px; /* отступ для шапки */
+            flex-grow: 1;
+            width: 100%;
         }
 
         /* Заголовок страницы */
@@ -68,7 +74,6 @@
             border: 1px solid #e0e0e0;
             border-radius: 12px;
             overflow: hidden;
-            text-decoration: none; /* Убираем подчеркивание у ссылки */
             display: flex;
             flex-direction: column;
             scroll-margin-top: 130px; /* Отступ под фиксированную шапку */
@@ -126,9 +131,17 @@
             transform: scale(1.06);
         }
 
+        .car-card-link {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            text-decoration: none;
+            color: inherit;
+        }
+
         /* Контент внутри карточки */
         .card-content {
-            padding: 25px;
+            padding: 25px 25px 0;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -154,18 +167,20 @@
             font-weight: 500;
         }
 
-        /* Нижняя часть с ценой и кнопкой */
-        .card-bottom {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
         .card-price {
             font-size: 22px;
             font-weight: 800;
-            color: #e63946; /* Красный цвет цены */
+            color: #e63946;
+            text-decoration: none;
+        }
+
+        .card-bottom {
+            margin-top: auto;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
         }
 
         .card-btn {
@@ -173,9 +188,11 @@
             color: #121212;
             border: 1px solid #e63946;
             padding: 10px 20px;
-            border-radius: 6px;
+            border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
             transition: all 0.3s ease;
         }
 
@@ -274,6 +291,11 @@
         .divfooter {
             background-color: #121212 !important;
             color: #ffffff !important;
+            width: 100%;
+            padding: 60px 20px 40px 20px;
+            box-sizing: border-box;
+            margin-top: 80px !important;
+            flex-shrink: 0;
         }
 
         .divfooter a {
@@ -286,6 +308,106 @@
 
         .divfooter-bottom p {
             color: #666666 !important;
+        }
+
+        /* Custom Select Sorting */
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 240px;
+            user-select: none;
+            z-index: 100;
+        }
+
+        .custom-select-trigger {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #121212;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .custom-select-trigger:hover {
+            border-color: #808080;
+            background-color: #f5f5f5;
+        }
+
+        .custom-select.open .custom-select-trigger {
+            border-color: #e63946;
+            box-shadow: 0 4px 12px rgba(230, 57, 70, 0.15);
+        }
+
+        .custom-select-trigger .arrow {
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #121212;
+            border-bottom: 2px solid #121212;
+            transform: rotate(45deg);
+            margin-left: 10px;
+            margin-top: -3px;
+            transition: transform 0.25s ease;
+        }
+
+        .custom-select.open .custom-select-trigger .arrow {
+            transform: rotate(-135deg);
+            margin-top: 3px;
+            border-color: #e63946;
+        }
+
+        .custom-options {
+            position: absolute;
+            display: block;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            border: 1px solid #e0e0e0;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(-10px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            z-index: 101;
+        }
+
+        .custom-select.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .custom-option {
+            position: relative;
+            display: block;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #121212;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .custom-option:hover {
+            background: #f5f5f5;
+            color: #e63946;
+        }
+
+        .custom-option.selected {
+            background: #fdf2f2;
+            color: #e63946;
         }
 
         /* Широкоформатные экраны */
@@ -314,6 +436,12 @@
                 justify-content: center;
             }
         }
+        @media (max-width: 768px) {
+            .catalog-grid {
+                grid-template-columns: 1fr !important;
+                gap: 20px;
+            }
+        }
         @media (max-width: 600px) {
             .catalog-container {
                 padding-top: 80px !important;
@@ -337,32 +465,96 @@
                 width: 100%;
                 justify-content: space-between;
             }
-            .sort-select {
+            .custom-select {
                 flex-grow: 1;
+            }
+            .custom-select-trigger {
                 font-size: 13px;
-                padding: 10px 30px 10px 15px;
+                padding: 10px 20px;
             }
             .catalog-grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                grid-template-columns: 1fr !important;
                 gap: 20px;
+            }
+        }
+
+        /* Закрепленная непрозрачная шапка для каталога */
+        header {
+            position: fixed !important;
+            background: #ffffff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 1000 !important;
+        }
+
+        .navbar {
+            background-color: #ffffff !important;
+            padding: 20px 50px !important;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px !important;
             }
         }
 
     </style>
 </head>
 <body>
+  <!-- Fullscreen Overlay Menu Start -->
+  <input type="checkbox" id="active">
+  <label for="active" class="menu-btn">
+    <span></span>
+  </label>
+  <div class="wrapper">
+    <ul>
+      <li><a href="../index.html">Главная</a></li>
+      <li><a href="../preorder.html">Предзаказ</a></li>
+      <li><a href="../contacts.html">Обратная связь</a></li>
+    </ul>
+  </div>
+  
+  <script>
+    (function() {
+      var checkbox = document.getElementById('active');
+      if (!checkbox) return;
+
+      // Close menu on link click
+      var links = document.querySelectorAll('.wrapper a');
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          checkbox.checked = false;
+        });
+      });
+
+      // Close menu when clicking outside of the menu list (on the wrapper)
+      var wrapper = document.querySelector('.wrapper');
+      if (wrapper) {
+        wrapper.addEventListener('click', function(e) {
+          if (e.target === wrapper) {
+            checkbox.checked = false;
+          }
+        });
+      }
+    })();
+  </script>
+  <!-- Fullscreen Overlay Menu End -->
+  
+  
+  
 
     <header>
       <nav class="navbar light-bg">
         <a href="../index.html" class="logo"><span>Redline</span> Motors</a>
-        <ul class="nav-links">
+  <ul class="nav-links">
           <li><a href="../index.html">Главная</a></li>
+          <li><a href="../preorder.html">Предзаказ</a></li>
           <li><a href="../contacts.html">Обратная связь</a></li>
         </ul>
-        <div class="burger">
-          <div class="line1"></div>
-          <div class="line2"></div>
-          <div class="line3"></div>
+        <div class="burger" id="burger-menu">
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </nav>
     </header>
@@ -382,14 +574,24 @@
                 <li class="filter-item" data-filter="bugatti">Bugatti</li>
                 <li class="filter-item" data-filter="ferrari">Ferrari</li>
                 <li class="filter-item" data-filter="lamborghini">Lamborghini</li>
-                <li class="filter-item" data-filter="maserati">Maserati</li>
+                <li class="filter-item" data-filter="mclaren">McLaren</li>
                 <li class="filter-item" data-filter="porsche">Porsche</li>
             </ul>
 
             <!-- Блок сортировки справа -->
             <div class="sort-controls">
                 <span class="sort-label">Сортировка:</span>
-                <select id="sort-select" class="sort-select">
+                <div class="custom-select" id="custom-sort-select">
+                    <div class="custom-select-trigger"><span>По умолчанию</span><div class="arrow"></div></div>
+                    <div class="custom-options">
+                        <span class="custom-option selected" data-value="default">По умолчанию</span>
+                        <span class="custom-option" data-value="name-asc">Название (А - Я)</span>
+                        <span class="custom-option" data-value="name-desc">Название (Я - А)</span>
+                        <span class="custom-option" data-value="price-asc">Цена (возрастание)</span>
+                        <span class="custom-option" data-value="price-desc">Цена (убывание)</span>
+                    </div>
+                </div>
+                <select id="sort-select" style="display: none;">
                     <option value="default">По умолчанию</option>
                     <option value="name-asc">Название (А - Я)</option>
                     <option value="name-desc">Название (Я - А)</option>
@@ -399,614 +601,99 @@
             </div>
         </div>
 
-        <div class="catalog-grid">
-            <a href="../card/aston_martin/car1.html" class="car-card" data-brand="aston_martin" id="aston_martin_1">
-                <div class="card-image" style="background-image: url('../assets/aston_martin.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Aston Martin Valkyrie #1</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.6 сек</span><br>
-                        Мощность: <span>1155 л.с.</span><br>
-                        Двигатель: <span>V12 Cosworth</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">250 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/aston_martin/car2.html" class="car-card" data-brand="aston_martin" id="aston_martin_2">
-                <div class="card-image" style="background-image: url('../assets/aston_martin.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Aston Martin Valkyrie #2</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.6 сек</span><br>
-                        Мощность: <span>1155 л.с.</span><br>
-                        Двигатель: <span>V12 Cosworth</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">250 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/aston_martin/car3.html" class="car-card" data-brand="aston_martin" id="aston_martin_3">
-                <div class="card-image" style="background-image: url('../assets/aston_martin.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Aston Martin Valkyrie #3</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.6 сек</span><br>
-                        Мощность: <span>1155 л.с.</span><br>
-                        Двигатель: <span>V12 Cosworth</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">250 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/aston_martin/car4.html" class="car-card" data-brand="aston_martin" id="aston_martin_4">
-                <div class="card-image" style="background-image: url('../assets/aston_martin.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Aston Martin Valkyrie #4</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.6 сек</span><br>
-                        Мощность: <span>1155 л.с.</span><br>
-                        Двигатель: <span>V12 Cosworth</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">250 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/aston_martin/car5.html" class="car-card" data-brand="aston_martin" id="aston_martin_5">
-                <div class="card-image" style="background-image: url('../assets/aston_martin.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Aston Martin Valkyrie #5</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.6 сек</span><br>
-                        Мощность: <span>1155 л.с.</span><br>
-                        Двигатель: <span>V12 Cosworth</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">250 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/aston_martin/car6.html" class="car-card" data-brand="aston_martin" id="aston_martin_6">
-                <div class="card-image" style="background-image: url('../assets/aston_martin.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Aston Martin Valkyrie #6</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.6 сек</span><br>
-                        Мощность: <span>1155 л.с.</span><br>
-                        Двигатель: <span>V12 Cosworth</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">250 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/bugatti/car1.html" class="car-card" data-brand="bugatti" id="bugatti_1">
-                <div class="card-image" style="background-image: url('../assets/buggati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Bugatti Bolide #1</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.17 сек</span><br>
-                        Мощность: <span>1850 л.с.</span><br>
-                        Двигатель: <span>W16, 8.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">350 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/bugatti/car2.html" class="car-card" data-brand="bugatti" id="bugatti_2">
-                <div class="card-image" style="background-image: url('../assets/buggati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Bugatti Bolide #2</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.17 сек</span><br>
-                        Мощность: <span>1850 л.с.</span><br>
-                        Двигатель: <span>W16, 8.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">350 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/bugatti/car3.html" class="car-card" data-brand="bugatti" id="bugatti_3">
-                <div class="card-image" style="background-image: url('../assets/buggati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Bugatti Bolide #3</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.17 сек</span><br>
-                        Мощность: <span>1850 л.с.</span><br>
-                        Двигатель: <span>W16, 8.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">350 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/bugatti/car4.html" class="car-card" data-brand="bugatti" id="bugatti_4">
-                <div class="card-image" style="background-image: url('../assets/buggati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Bugatti Bolide #4</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.17 сек</span><br>
-                        Мощность: <span>1850 л.с.</span><br>
-                        Двигатель: <span>W16, 8.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">350 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/bugatti/car5.html" class="car-card" data-brand="bugatti" id="bugatti_5">
-                <div class="card-image" style="background-image: url('../assets/buggati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Bugatti Bolide #5</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.17 сек</span><br>
-                        Мощность: <span>1850 л.с.</span><br>
-                        Двигатель: <span>W16, 8.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">350 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/bugatti/car6.html" class="car-card" data-brand="bugatti" id="bugatti_6">
-                <div class="card-image" style="background-image: url('../assets/buggati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Bugatti Bolide #6</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.17 сек</span><br>
-                        Мощность: <span>1850 л.с.</span><br>
-                        Двигатель: <span>W16, 8.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">350 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/ferrari/car1.html" class="car-card" data-brand="ferrari" id="ferrari_1">
-                <div class="card-image" style="background-image: url('../assets/ferrari.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Ferrari SF90 Stradale #1</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1000 л.с.</span><br>
-                        Двигатель: <span>V8 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">55 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/ferrari/car2.html" class="car-card" data-brand="ferrari" id="ferrari_2">
-                <div class="card-image" style="background-image: url('../assets/ferrari.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Ferrari SF90 Stradale #2</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1000 л.с.</span><br>
-                        Двигатель: <span>V8 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">55 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/ferrari/car3.html" class="car-card" data-brand="ferrari" id="ferrari_3">
-                <div class="card-image" style="background-image: url('../assets/ferrari.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Ferrari SF90 Stradale #3</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1000 л.с.</span><br>
-                        Двигатель: <span>V8 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">55 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/ferrari/car4.html" class="car-card" data-brand="ferrari" id="ferrari_4">
-                <div class="card-image" style="background-image: url('../assets/ferrari.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Ferrari SF90 Stradale #4</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1000 л.с.</span><br>
-                        Двигатель: <span>V8 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">55 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/ferrari/car5.html" class="car-card" data-brand="ferrari" id="ferrari_5">
-                <div class="card-image" style="background-image: url('../assets/ferrari.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Ferrari SF90 Stradale #5</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1000 л.с.</span><br>
-                        Двигатель: <span>V8 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">55 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/ferrari/car6.html" class="car-card" data-brand="ferrari" id="ferrari_6">
-                <div class="card-image" style="background-image: url('../assets/ferrari.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Ferrari SF90 Stradale #6</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1000 л.с.</span><br>
-                        Двигатель: <span>V8 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">55 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/lamborghini/car1.html" class="car-card" data-brand="lamborghini" id="lamborghini_1">
-                <div class="card-image" style="background-image: url('../assets/lamborghini_car.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Lamborghini Revuelto #1</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1015 л.с.</span><br>
-                        Двигатель: <span>V12 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">60 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/lamborghini/car2.html" class="car-card" data-brand="lamborghini" id="lamborghini_2">
-                <div class="card-image" style="background-image: url('../assets/lamborghini_car.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Lamborghini Revuelto #2</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1015 л.с.</span><br>
-                        Двигатель: <span>V12 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">60 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/lamborghini/car3.html" class="car-card" data-brand="lamborghini" id="lamborghini_3">
-                <div class="card-image" style="background-image: url('../assets/lamborghini_car.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Lamborghini Revuelto #3</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1015 л.с.</span><br>
-                        Двигатель: <span>V12 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">60 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/lamborghini/car4.html" class="car-card" data-brand="lamborghini" id="lamborghini_4">
-                <div class="card-image" style="background-image: url('../assets/lamborghini_car.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Lamborghini Revuelto #4</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1015 л.с.</span><br>
-                        Двигатель: <span>V12 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">60 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/lamborghini/car5.html" class="car-card" data-brand="lamborghini" id="lamborghini_5">
-                <div class="card-image" style="background-image: url('../assets/lamborghini_car.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Lamborghini Revuelto #5</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1015 л.с.</span><br>
-                        Двигатель: <span>V12 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">60 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/lamborghini/car6.html" class="car-card" data-brand="lamborghini" id="lamborghini_6">
-                <div class="card-image" style="background-image: url('../assets/lamborghini_car.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Lamborghini Revuelto #6</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.5 сек</span><br>
-                        Мощность: <span>1015 л.с.</span><br>
-                        Двигатель: <span>V12 Hybrid</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">60 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/maserati/car1.html" class="car-card" data-brand="maserati" id="maserati_1">
-                <div class="card-image" style="background-image: url('../assets/mazerati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Maserati MC20 #1</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.9 сек</span><br>
-                        Мощность: <span>630 л.с.</span><br>
-                        Двигатель: <span>V6 Twin-Turbo Nettuno</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">28 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/maserati/car2.html" class="car-card" data-brand="maserati" id="maserati_2">
-                <div class="card-image" style="background-image: url('../assets/mazerati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Maserati MC20 #2</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.9 сек</span><br>
-                        Мощность: <span>630 л.с.</span><br>
-                        Двигатель: <span>V6 Twin-Turbo Nettuno</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">28 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/maserati/car3.html" class="car-card" data-brand="maserati" id="maserati_3">
-                <div class="card-image" style="background-image: url('../assets/mazerati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Maserati MC20 #3</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.9 сек</span><br>
-                        Мощность: <span>630 л.с.</span><br>
-                        Двигатель: <span>V6 Twin-Turbo Nettuno</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">28 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/maserati/car4.html" class="car-card" data-brand="maserati" id="maserati_4">
-                <div class="card-image" style="background-image: url('../assets/mazerati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Maserati MC20 #4</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.9 сек</span><br>
-                        Мощность: <span>630 л.с.</span><br>
-                        Двигатель: <span>V6 Twin-Turbo Nettuno</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">28 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/maserati/car5.html" class="car-card" data-brand="maserati" id="maserati_5">
-                <div class="card-image" style="background-image: url('../assets/mazerati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Maserati MC20 #5</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.9 сек</span><br>
-                        Мощность: <span>630 л.с.</span><br>
-                        Двигатель: <span>V6 Twin-Turbo Nettuno</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">28 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/maserati/car6.html" class="car-card" data-brand="maserati" id="maserati_6">
-                <div class="card-image" style="background-image: url('../assets/mazerati.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Maserati MC20 #6</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>2.9 сек</span><br>
-                        Мощность: <span>630 л.с.</span><br>
-                        Двигатель: <span>V6 Twin-Turbo Nettuno</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">28 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/porsche/car1.html" class="car-card" data-brand="porsche" id="porsche_1">
-                <div class="card-image" style="background-image: url('../assets/porche.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Porsche 911 GT3 RS #1</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>3.2 сек</span><br>
-                        Мощность: <span>525 л.с.</span><br>
-                        Двигатель: <span>Opposed-6, 4.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">45 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/porsche/car2.html" class="car-card" data-brand="porsche" id="porsche_2">
-                <div class="card-image" style="background-image: url('../assets/porche.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Porsche 911 GT3 RS #2</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>3.2 сек</span><br>
-                        Мощность: <span>525 л.с.</span><br>
-                        Двигатель: <span>Opposed-6, 4.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">45 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/porsche/car3.html" class="car-card" data-brand="porsche" id="porsche_3">
-                <div class="card-image" style="background-image: url('../assets/porche.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Porsche 911 GT3 RS #3</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>3.2 сек</span><br>
-                        Мощность: <span>525 л.с.</span><br>
-                        Двигатель: <span>Opposed-6, 4.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">45 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/porsche/car4.html" class="car-card" data-brand="porsche" id="porsche_4">
-                <div class="card-image" style="background-image: url('../assets/porche.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Porsche 911 GT3 RS #4</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>3.2 сек</span><br>
-                        Мощность: <span>525 л.с.</span><br>
-                        Двигатель: <span>Opposed-6, 4.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">45 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/porsche/car5.html" class="car-card" data-brand="porsche" id="porsche_5">
-                <div class="card-image" style="background-image: url('../assets/porche.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Porsche 911 GT3 RS #5</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>3.2 сек</span><br>
-                        Мощность: <span>525 л.с.</span><br>
-                        Двигатель: <span>Opposed-6, 4.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">45 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-            <a href="../card/porsche/car6.html" class="car-card" data-brand="porsche" id="porsche_6">
-                <div class="card-image" style="background-image: url('../assets/porche.jpg');"></div>
-                <div class="card-content">
-                    <h3 class="card-title">Porsche 911 GT3 RS #6</h3>
-                    <p class="card-specs">
-                        Разгон до 100: <span>3.2 сек</span><br>
-                        Мощность: <span>525 л.с.</span><br>
-                        Двигатель: <span>Opposed-6, 4.0 л</span>
-                    </p>
-                    <div class="card-bottom">
-                        <div class="card-price">45 млн ₽</div>
-                        <div class="card-btn">Подробнее</div>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-
-        <div class="divfooter" style="margin-top: 80px !important;">
-          <div class="divfooter-nav-row">
-            <a href="catalog.html">Каталог</a>
-            <a href="../contacts.html">Обратная связь</a>
-          </div>
-          <div class="divfooter-socials">
-            <a href="#" target="_blank">
-              <img src="../assets/vk.png" alt="VK" />
-            </a>
-            <a href="#" target="_blank">
-              <img src="../assets/tg.png" alt="Telegram" />
-            </a>
-            <a href="#" target="_blank">
-              <img src="../assets/youtube.png" alt="YouTube" />
-            </a>
-          </div>
-          <div class="divfooter-bottom">
-            <p>© 2026 Redline Motors. Все права защищены.</p>
-          </div>
-        </div>
+        <div class="catalog-grid"></div>
     </div>
 
+    <div class="divfooter">
+      <div class="divfooter-nav-row">
+        <a href="catalog.html">Каталог</a>
+        <a href="../contacts.html">Обратная связь</a>
+      </div>
+      <div class="divfooter-socials">
+        <a href="#" target="_blank">
+          <img src="../assets/logo/vk.png" alt="VK" />
+        </a>
+        <a href="#" target="_blank">
+          <img src="../assets/logo/tg.png" alt="Telegram" />
+        </a>
+        <a href="#" target="_blank">
+          <img src="../assets/logo/youtube.png" alt="YouTube" />
+        </a>
+      </div>
+      <div class="divfooter-bottom">
+        <p>© 2026 Redline Motors. Все права защищены.</p>
+      </div>
+    </div>
+
+  <script src="../card/cars_data.js"></script>
   <script>
-    var burger = document.querySelector(".burger");
-    var nav = document.querySelector(".nav-links");
-    if (burger && nav) {
-      burger.addEventListener("click", function () {
-        nav.classList.toggle("nav-active");
+    var burgerBtn = document.getElementById('burger-menu');
+    var navLinksEl = document.querySelector('.nav-links');
+    if (burgerBtn && navLinksEl) {
+      burgerBtn.addEventListener('click', function() {
+        navLinksEl.classList.toggle('nav-active');
+        burgerBtn.classList.toggle('toggle');
       });
+      document.addEventListener('click', function(e) {
+        if (navLinksEl.classList.contains('nav-active') &&
+            !navLinksEl.contains(e.target) &&
+            !burgerBtn.contains(e.target)) {
+          navLinksEl.classList.remove('nav-active');
+          burgerBtn.classList.remove('toggle');
+        }
+      });
+    }
+
+    function findSpecValue(specs, keyword) {
+      if (!Array.isArray(specs)) {
+        return "Не указано";
+      }
+
+      const foundSpec = specs.find(spec => spec.name && spec.name.toLowerCase().includes(keyword));
+      return foundSpec && foundSpec.value ? foundSpec.value : "Не указано";
+    }
+
+    function renderCatalogFromData() {
+      const grid = document.querySelector('.catalog-grid');
+      if (!grid || typeof carsData === "undefined") {
+        return;
+      }
+
+      const cardsHtml = [];
+
+      Object.entries(carsData).forEach(([brandId, brandCars]) => {
+        Object.entries(brandCars).forEach(([carId, carData]) => {
+          const cardIndex = carId.replace('car', '');
+          const previewImage = Array.isArray(carData.images) && carData.images.length ? carData.images[0] : '../assets/Ferrari/199035aa5a6e472c13fa94644c13ce82.jpg';
+          const acceleration = findSpecValue(carData.specs, 'разгон');
+          const power = findSpecValue(carData.specs, 'мощност');
+          const engine = findSpecValue(carData.specs, 'тип двигателя');
+
+          const preorderUrl = carData.preorderUrl || '../preorder.html';
+
+          cardsHtml.push(`
+            <article class="car-card" data-brand="${brandId}" id="${brandId}_${cardIndex}">
+              <a href="../card/card.html?brand=${brandId}&car=${carId}" class="car-card-link">
+                <div class="card-image" style="background-image: url('${previewImage}');"></div>
+                <div class="card-content">
+                  <h3 class="card-title">${carData.title}</h3>
+                  <p class="card-specs">
+                    Разгон до 100: <span>${acceleration}</span><br>
+                    Мощность: <span>${power}</span><br>
+                    Двигатель: <span>${engine}</span>
+                  </p>
+                </div>
+              </a>
+              <div class="card-bottom">
+                <a href="../card/card.html?brand=${brandId}&car=${carId}" class="card-price">${carData.price}</a>
+                <a href="${preorderUrl}" class="card-btn">Предзаказ</a>
+              </div>
+            </article>
+          `);
+        });
+      });
+
+      grid.innerHTML = cardsHtml.join('');
     }
 
     // JS-фильтрация по брендам с использованием хэша и списка с анимацией
@@ -1068,7 +755,7 @@
     // Обработка хэша при загрузке страницы и смене хэша
     function handleHash() {
       const hash = window.location.hash.substring(1);
-      const validFilters = ['aston_martin', 'bugatti', 'ferrari', 'lamborghini', 'maserati', 'porsche'];
+      const validFilters = ['aston_martin', 'bugatti', 'ferrari', 'lamborghini', 'mclaren', 'porsche'];
       if (hash && validFilters.includes(hash)) {
         applyFilter(hash);
       } else {
@@ -1084,6 +771,7 @@
     
     // Сохраняем исходный порядок карточек после загрузки DOM
     window.addEventListener('DOMContentLoaded', () => {
+      renderCatalogFromData();
       originalCardsOrder = Array.from(document.querySelectorAll('.car-card'));
       
       // Очистка классов анимации и задержки по окончании анимации
@@ -1100,6 +788,40 @@
       if (sortSelect) {
         sortSelect.addEventListener('change', (e) => {
           applySorting(e.target.value);
+        });
+      }
+
+      // Custom select logic
+      const customSelect = document.getElementById('custom-sort-select');
+      if (customSelect) {
+        const trigger = customSelect.querySelector('.custom-select-trigger');
+        const triggerText = trigger.querySelector('span');
+        const options = customSelect.querySelectorAll('.custom-option');
+
+        trigger.addEventListener('click', function(e) {
+          e.stopPropagation();
+          customSelect.classList.toggle('open');
+        });
+
+        options.forEach(opt => {
+          opt.addEventListener('click', function() {
+            options.forEach(o => o.classList.remove('selected'));
+            this.classList.add('selected');
+            const val = this.getAttribute('data-value');
+            triggerText.textContent = this.textContent;
+            customSelect.classList.remove('open');
+            
+            // Sync with real select
+            if (sortSelect) {
+              sortSelect.value = val;
+              sortSelect.dispatchEvent(new Event('change'));
+            }
+          });
+        });
+
+        // Close select on click outside
+        document.addEventListener('click', function() {
+          customSelect.classList.remove('open');
         });
       }
     });

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Обратная связь - Redline Motors</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/index.css">
@@ -83,7 +84,7 @@
             padding: 16px;
             background-color: #f5f7fa;
             border: 1px solid transparent;
-            border-radius: 6px;
+            border-radius: 10px;
             outline: none;
             font-size: 15px;
             transition: border 0.3s ease;
@@ -106,7 +107,7 @@
             padding: 16px 35px;
             font-size: 16px;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 10px;
             font-weight: 600;
             transition: background 0.3s, transform 0.1s;
         }
@@ -175,6 +176,23 @@
             line-height: 1.5;
         }
 
+        /* Закрепленная шапка как в каталоге */
+        header {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid #e0e0e0;
+            z-index: 1000 !important;
+        }
+
+        .navbar {
+            background-color: #ffffff !important;
+            padding: 20px 50px !important;
+        }
+
         /* Адаптивность для мобильных */
         @media (max-width: 850px) {
             .contact-section {
@@ -192,39 +210,75 @@
                 padding: 40px 30px;
             }
         }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px !important;
+            }
+        }
     </style>
 </head>
 <body>
+  <!-- Fullscreen Overlay Menu Start -->
+  <input type="checkbox" id="active">
+  <label for="active" class="menu-btn">
+    <span></span>
+  </label>
+  <div class="wrapper">
+    <ul>
+      <li><a href="index.html">Главная</a></li>
+      <li><a href="preorder.html">Предзаказ</a></li>
+      <li><a href="contacts.html">Обратная связь</a></li>
+    </ul>
+  </div>
+  
+  <script>
+    (function() {
+      var checkbox = document.getElementById('active');
+      if (!checkbox) return;
+
+      // Close menu on link click
+      var links = document.querySelectorAll('.wrapper a');
+      links.forEach(function(link) {
+        link.addEventListener('click', function() {
+          checkbox.checked = false;
+        });
+      });
+
+      // Close menu when clicking outside of the menu list (on the wrapper)
+      var wrapper = document.querySelector('.wrapper');
+      if (wrapper) {
+        wrapper.addEventListener('click', function(e) {
+          if (e.target === wrapper) {
+            checkbox.checked = false;
+          }
+        });
+      }
+    })();
+  </script>
+  <!-- Fullscreen Overlay Menu End -->
+  
+  
+  
 
     <header>
       <nav class="navbar light-bg">
         <a href="index.html" class="logo"><span>Redline</span> Motors</a>
-        <ul class="nav-links">
-          <li class="dropdown">
-            <a href="catalog/catalog.html" class="dropbtn">Каталог авто <span class="arrow-down">▼</span></a>
-            <ul class="dropdown-content">
-              <li><a href="catalog/catalog.html#aston_martin">Aston Martin</a></li>
-              <li><a href="catalog/catalog.html#bugatti">Bugatti</a></li>
-              <li><a href="catalog/catalog.html#ferrari">Ferrari</a></li>
-              <li><a href="catalog/catalog.html#lamborghini">Lamborghini</a></li>
-              <li><a href="catalog/catalog.html#maserati">Maserati</a></li>
-              <li><a href="catalog/catalog.html#porsche">Porsche</a></li>
-            </ul>
-          </li>
+  <ul class="nav-links">
+          <li><a href="index.html">Главная</a></li>
+          <li><a href="preorder.html">Предзаказ</a></li>
           <li><a href="contacts.html">Обратная связь</a></li>
         </ul>
-        <div class="burger">
-          <div class="line1"></div>
-          <div class="line2"></div>
-          <div class="line3"></div>
+        <div class="burger" id="burger-menu">
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
       </nav>
     </header>
 
-    <div style="max-width: 1200px; margin: 120px auto -40px auto; padding: 0 20px;">
-        <a href="index.html" style="color: #e63946; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-family: 'Segoe UI', sans-serif; transition: color 0.2s;" onmouseover="this.style.color='#c92a38'" onmouseout="this.style.color='#e63946'">
-            ← Назад на главную
-        </a>
+    <div class="page-back-wrap">
+        <a href="catalog/catalog.html" class="back-catalog-btn">Назад в каталог</a>
     </div>
 
     <section class="contact-section">
@@ -289,13 +343,13 @@
       </div>
       <div class="divfooter-socials">
         <a href="#" target="_blank">
-          <img src="./assets/vk.png" alt="VK" />
+          <img src="./assets/logo/vk.png" alt="VK" />
         </a>
         <a href="#" target="_blank">
-          <img src="./assets/tg.png" alt="Telegram" />
+          <img src="./assets/logo/tg.png" alt="Telegram" />
         </a>
         <a href="#" target="_blank">
-          <img src="./assets/youtube.png" alt="YouTube" />
+          <img src="./assets/logo/youtube.png" alt="YouTube" />
         </a>
       </div>
       <div class="divfooter-bottom">
@@ -304,11 +358,32 @@
     </div>
 
     <script>
-        var burger = document.querySelector(".burger");
-        var nav = document.querySelector(".nav-links");
-        if (burger && nav) {
-          burger.addEventListener("click", function () {
-            nav.classList.toggle("nav-active");
+        // Burger menu toggle
+        var burgerBtn = document.getElementById('burger-menu');
+        var navLinksEl = document.querySelector('.nav-links');
+        if (burgerBtn && navLinksEl) {
+          burgerBtn.addEventListener('click', function() {
+            navLinksEl.classList.toggle('nav-active');
+            burgerBtn.classList.toggle('toggle');
+          });
+          document.addEventListener('click', function(e) {
+            if (navLinksEl.classList.contains('nav-active') &&
+                !navLinksEl.contains(e.target) &&
+                !burgerBtn.contains(e.target)) {
+              navLinksEl.classList.remove('nav-active');
+              burgerBtn.classList.remove('toggle');
+            }
+          });
+        }
+
+        // Mobile dropdown toggle
+        var dropdownBtn = document.querySelector('.dropdown .dropbtn');
+        if (dropdownBtn) {
+          dropdownBtn.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+              e.preventDefault();
+              this.parentElement.classList.toggle('dropdown-open');
+            }
           });
         }
     </script>
