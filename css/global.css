@@ -8,6 +8,10 @@ body {
   flex-direction: column;
 }
 
+html {
+  background-color: #121212;
+}
+
 body {
   line-height: normal;
 }
